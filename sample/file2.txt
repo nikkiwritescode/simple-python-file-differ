@@ -1,6 +1,9 @@
-A
-B
-C
-F
-E
-fghijkl
+coding
+is
+awful
+And
+bash
+is not
+the
+best
+sHeLL

@@ -1,6 +1,9 @@
-A
-B
-C
-D
-E
-fghijkl
+coding
+is
+cool
+and
+bash
+is
+
+best
+shell
