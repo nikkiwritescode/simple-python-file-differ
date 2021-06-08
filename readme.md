@@ -1,11 +1,14 @@
-# Simple File Differ
-This script compares two text files, line by line, for differences.
+# Simple Python File Differ
+This Python script takes two input files and processes them, line by line, to see where the differences are. Optionally, it can log the output to file in addition to showing the output in the Terminal.
 
 ## How to Use
-From a terminal with Python 3 installed, you can use the following command to test the script with the included sample files: `python3 .\filediff.py -f1 ./sample/file1.txt -f2 ./sample/file2.txt`
+You can use this script as follows:
 
-`-f1` or `--file1` specifies the location of the first input file.
-`-f2` or `--file2` specifies the location of the second input file.
+`python3 ./filediff.py --file1 ./sample/file1.txt --file2 ./sample/file2.txt --output ./outputlogs/log.txt`
 
-## Redirecting the output to a log file
-When running the script, add the `>` operator, followed by the path to the 
+## Parameters
+|    Long    | Short | Description                                               |
+|:----------:|:-----:|:----------------------------------------------------------|
+| `--file1`  | `-f1` | The path to the first input file.                         |
+| `--file2`  | `-f2` | The path to the second input file.                        |
+| `--output` |  `-o` | (Optional) Path to the file where logs should be written. |

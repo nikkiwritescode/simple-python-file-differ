@@ -1,6 +1,7 @@
 import argparse
 import sys
 import os
+import platform
 import pathlib
 firstinputfile = ""
 secondinputfile = ""
@@ -26,12 +27,26 @@ if(outputfile != "" and outputfile is not None):
             pathlib.Path(outputfile).parent.absolute(),
             mode=0o755, exist_ok=False)
 
-    if(os.path.isfile(args.file1) is False):  # if the log file does not exist
+    if(os.path.isfile(args.output) is False):  # if the log file does not exist
         log_file = open(outputfile, "x")  # create it
-    elif(os.path.isfile(args.file1) is True):  # but if it does already exist,
+    elif(os.path.isfile(args.output) is True):  # but if it does already exist,
         log_file = open(outputfile, "a")  # append to the existing file
 
     logging_to_file = True
+
+
+def accepts(*types):
+    def check_accepts(f):
+        assert len(types) == f.__code__.co_argcount
+
+        def new_f(*args, **kwds):
+            for (a, t) in zip(args, types):
+                assert isinstance(a, t), \
+                       "arg %r does not match %s" % (a, t)
+            return f(*args, **kwds)
+        new_f.__name__ = f.__name__
+        return new_f
+    return check_accepts
 
 
 def main(argv):
@@ -39,17 +54,19 @@ def main(argv):
     diffCount = 0
     sameCount = 0
 
-    if(os.path.isfile(args.file1) is False):  # if its the default value
+    if(args.file1 is not None and args.file2 is not None):
+        if(os.path.isfile(args.file1) is False):  # if its the default value
+            ShowFileMissingError("file1", "f1")
+            sys.exit(2)
+        if(os.path.isfile(args.file2) is False):  # if its the default value
+            ShowFileMissingError("file2", "f2")
+            sys.exit(2)
+    else:
         ShowFileMissingError()
         sys.exit(2)
-    else:
-        firstinputfile = args.file1
 
-    if(os.path.isfile(args.file2) is False):
-        ShowFileMissingError()
-        sys.exit(2)
-    else:
-        secondinputfile = args.file2
+    firstinputfile = args.file1
+    secondinputfile = args.file2
 
     try:
         with open(firstinputfile) as f1, open(secondinputfile) as f2:
@@ -83,10 +100,17 @@ def main(argv):
         sys.exit(2)
 
 
-def ShowFileMissingError():
-    printing("---Error Details---")
-    printing("Please enter two files to compare! Use the -h flag for help.")
-    printing('-------------------')
+def ShowFileMissingError(longArg="not set", shortArg="none"):
+    if(longArg != "not set"):
+        printing("---Error Details---")
+        printing(f"The file passed in using the -{shortArg} or --{longArg} " +
+                 "parameter could not be found! Please check the path " +
+                 "and try again.")
+        printing('-------------------')
+    else:
+        printing("---Error Details---")
+        printing("Please enter two files to compare! Type -h for help.")
+        printing('-------------------')
 
 
 def ShowFileNotFoundError():
@@ -113,6 +137,8 @@ def printing(text, no_newline=False, fail=False, success=False):
 
 
 def ApplyFailOrSuccessColor(text, fail, success):
+    if(platform.system() != "Windows"):  # this isn't supported in
+        return text                      # Windows terminals, sadly.
     if(fail):
         return f"{bcolors.FAIL}{text}{bcolors.ENDC}"
     elif(success):
