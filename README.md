@@ -6,7 +6,7 @@ You can use this script as follows:
 
 `python3 ./filediff.py --file1 ./sample/file1.txt --file2 ./sample/file2.txt --output ./outputlogs/log.txt`
 
-## Parameters
+## Explanation of Parameters
 |    Long    | Short | Description                                               |
 |:----------:|:-----:|:----------------------------------------------------------|
 | `--file1`  | `-f1` | The path to the first input file.                         |
