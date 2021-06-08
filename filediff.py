@@ -6,6 +6,7 @@ firstinputfile = ""
 secondinputfile = ""
 outputfile = ""
 log_file = ""
+logging_to_file = False
 
 parser = argparse.ArgumentParser(
     description='Compare two files line-by-line for differences.'
@@ -16,13 +17,21 @@ parser.add_argument('-o', '--output', help='(optional) the output file name')
 args = parser.parse_args()
 
 outputfile = args.output
-if(os.path.isdir(pathlib.Path(outputfile).parent.absolute()) is False):  # if the referenced log folder does not exist
-    os.makedirs(pathlib.Path(outputfile).parent.absolute(), mode=0o755, exist_ok=False)  # create it
+# if the outputfile variable is not blank
+if(outputfile != "" and outputfile is not None):
+    # but the proposed log directory does not already exist
+    if(os.path.isdir(pathlib.Path(outputfile).parent.absolute()) is False):
+        # create it
+        os.makedirs(
+            pathlib.Path(outputfile).parent.absolute(),
+            mode=0o755, exist_ok=False)
 
-if(os.path.isfile(args.file1) is False):  # if the log file does not exist
-    log_file = open(outputfile, "x")  # create it
-elif(os.path.isfile(args.file1) is True):  # but f it does exist,
-    log_file = open(outputfile, "a")  # append to it
+    if(os.path.isfile(args.file1) is False):  # if the log file does not exist
+        log_file = open(outputfile, "x")  # create it
+    elif(os.path.isfile(args.file1) is True):  # but if it does already exist,
+        log_file = open(outputfile, "a")  # append to the existing file
+
+    logging_to_file = True
 
 
 def main(argv):
@@ -51,17 +60,17 @@ def main(argv):
                     sameCount += 1
                 else:  # and if they don't, print the data from both
                     printing(f"Line {lineCount + 1}: ", no_newline=True)
-                    printing(f"File 1: ", no_newline=True)
+                    printing("File 1: ", no_newline=True)
                     printing(x.rstrip(), no_newline=True, fail=True)
                     printing(" | ", no_newline=True)
-                    printing(f"File 2: ", no_newline=True)
+                    printing("File 2: ", no_newline=True)
                     printing(y.rstrip(), fail=True)
                     diffCount += 1
                 lineCount += 1
         printing("------Results------")
-        printing(f"The total line count was ", no_newline=True)
+        printing("The total line count was ", no_newline=True)
         printing(f"{lineCount}.", no_newline=False, fail=False, success=True)
-        printing(f"There were ", no_newline=True)
+        printing("There were ", no_newline=True)
         printing(f"{diffCount}", no_newline=True, fail=True, success=False)
         printing(" differing lines.")
         printing(f"{sameCount}", no_newline=True, fail=False, success=True)
@@ -92,11 +101,11 @@ def printing(text, no_newline=False, fail=False, success=False):
         print("Exiting application.")
         sys.exit(2)
     if(no_newline):
-        print(ApplyFailOrSuccessColor(text, fail, success), end="")       
+        print(ApplyFailOrSuccessColor(text, fail, success), end="")
     else:
-        print(ApplyFailOrSuccessColor(text, fail, success))  
- 
-    if(log_file != ""):
+        print(ApplyFailOrSuccessColor(text, fail, success))
+
+    if(logging_to_file):
         if(no_newline):
             log_file.write(text)
         else:
@@ -110,6 +119,7 @@ def ApplyFailOrSuccessColor(text, fail, success):
         return f"{bcolors.OKGREEN}{text}{bcolors.ENDC}"
     else:
         return text
+
 
 class bcolors:
     OKGREEN = '\033[92m'
