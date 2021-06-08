@@ -137,7 +137,7 @@ def printing(text, no_newline=False, fail=False, success=False):
 
 
 def ApplyFailOrSuccessColor(text, fail, success):
-    if(platform.system() != "Windows"):  # this isn't supported in
+    if(platform.system() == "Windows"):  # this isn't supported in
         return text                      # Windows terminals, sadly.
     if(fail):
         return f"{bcolors.FAIL}{text}{bcolors.ENDC}"
