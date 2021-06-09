@@ -3,11 +3,16 @@ import sys
 import os
 import platform
 import pathlib
+
+# Declaring the Variables
+
 firstinputfile = ""
 secondinputfile = ""
 outputfile = ""
 log_file = ""
 logging_to_file = False
+
+# Parsing the Input Parameters
 
 parser = argparse.ArgumentParser(
     description='Compare two files line-by-line for differences.'
@@ -48,6 +53,8 @@ def accepts(*types):
         return new_f
     return check_accepts
 
+
+# The Actual Program™
 
 def main(argv):
     lineCount = 0
@@ -100,6 +107,8 @@ def main(argv):
         sys.exit(2)
 
 
+# Error printing
+
 def ShowFileMissingError(longArg="not set", shortArg="none"):
     if(longArg != "not set"):
         printing("---Error Details---")
@@ -118,6 +127,8 @@ def ShowFileNotFoundError():
     printing('One or more of the specified input files does not exist!')
     printing('-------------------')
 
+
+# Custom printing function to make colorizing values easier
 
 def printing(text, no_newline=False, fail=False, success=False):
     if(success and fail):
@@ -147,12 +158,16 @@ def ApplyFailOrSuccessColor(text, fail, success):
         return text
 
 
+# Color definitions
+
 class bcolors:
     OKGREEN = '\033[92m'
     WARNING = '\033[93m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
+
+# Program entrance
 
 if __name__ == "__main__":
     main(sys.argv[1:])

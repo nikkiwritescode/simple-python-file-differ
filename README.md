@@ -14,7 +14,7 @@ You can use this script as follows:
 | `--output` |  `-o` | (Optional) Path to the file where logs should be written. |
 
 ## Output
-Successful output should look like this if you use the included sample files:
+Successful output should look like this if you use the included sample files, though on Windows terminals the output will not feature any color.
 
 ![ImageOfSuccessfulOutput](https://i.imgur.com/siRPp3D.png)
 
