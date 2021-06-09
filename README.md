@@ -12,3 +12,12 @@ You can use this script as follows:
 | `--file1`  | `-f1` | The path to the first input file.                         |
 | `--file2`  | `-f2` | The path to the second input file.                        |
 | `--output` |  `-o` | (Optional) Path to the file where logs should be written. |
+
+## Output
+Successful output should look like this if you use the included sample files:
+
+![ImageOfSuccessfulOutput](https://i.imgur.com/siRPp3D.png)
+
+Errors are mostly handled, as well, so depending on what the issue is you should get an error message in plain English like so:
+
+![ImageOfErrorOutput](https://i.imgur.com/NRjKbHo.png)
