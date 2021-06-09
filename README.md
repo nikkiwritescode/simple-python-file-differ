@@ -4,7 +4,7 @@ This Python script takes two input files and processes them, line by line, to se
 ## How to Use
 You can use this script as follows:
 
-`python3 ./filediff.py -f1 ./sample/file1.txt -f2 ./sample/file2.txt -o ./outputlogs/log.txt`
+`python3 ./filediff.py -f1 ./sample_input_files/file1.txt -f2 ./sample_input_files/file2.txt -o log.txt`
 
 ## Explanation of Parameters
 |    Long    | Short | Description                                               |
