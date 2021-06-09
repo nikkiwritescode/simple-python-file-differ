@@ -62,11 +62,15 @@ def main(argv):
     sameCount = 0
 
     if(args.file1 is not None and args.file2 is not None):
+        if(os.path.isfile(args.file1) is False and 
+           os.path.isfile(args.file2) is False):
+            ShowFileMissingError(True, "both", "both")
+            sys.exit(2)
         if(os.path.isfile(args.file1) is False):  # if its the default value
-            ShowFileMissingError("file1", "f1")
+            ShowFileMissingError(False, "file1", "f1")
             sys.exit(2)
         if(os.path.isfile(args.file2) is False):  # if its the default value
-            ShowFileMissingError("file2", "f2")
+            ShowFileMissingError(False, "file2", "f2")
             sys.exit(2)
     else:
         ShowFileMissingError()
@@ -109,8 +113,13 @@ def main(argv):
 
 # Error printing
 
-def ShowFileMissingError(longArg="not set", shortArg="none"):
-    if(longArg != "not set"):
+def ShowFileMissingError(bothFailed=False, longArg="not set", shortArg="none"):
+    if(bothFailed is True):
+        printing("---Error Details---")
+        printing("Neither of the referenced input files could be found! ", no_newline=True)
+        printing("Please check the file paths and try again.")
+        printing('-------------------')
+    elif(longArg != "not set"):
         printing("---Error Details---")
         printing(f"The file passed in using the -{shortArg} or --{longArg} " +
                  "parameter could not be found! Please check the path " +
